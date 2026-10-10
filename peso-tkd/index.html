@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Peso TKD</title>
+  <meta name="description" content="Registro de peso, nutrición y entrenamiento con reportes semanales.">
+  <meta name="theme-color" content="#0f1115">
+  <meta name="color-scheme" content="dark">
+
+  <!-- PWA / iPhone -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Peso TKD">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Chart.js guardado localmente para que funcione sin conexión -->
+  <script src="lib/chart.umd.min.js" defer></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="titulo">Registro</h1>
+  </header>
+
+  <!-- Aviso de respaldo (se muestra si pasaron más de 7 días) -->
+  <div id="aviso-respaldo" class="aviso-respaldo" hidden></div>
+
+  <main id="vista" class="vista">
+    <p class="muted centro">Cargando…</p>
+  </main>
+
+  <nav class="tabbar" aria-label="Secciones">
+    <a href="#registro" data-tab="registro"><span class="ico">✏️</span>Registro</a>
+    <a href="#reporte" data-tab="reporte"><span class="ico">📊</span>Reporte</a>
+    <a href="#progreso" data-tab="progreso"><span class="ico">🎯</span>Progreso</a>
+    <a href="#ajustes" data-tab="ajustes"><span class="ico">⚙️</span>Ajustes</a>
+  </nav>
+</body>
+</html>
