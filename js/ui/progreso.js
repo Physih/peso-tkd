@@ -7,7 +7,7 @@ import { state, daysSorted } from '../db.js';
 import { hoyISO, addDays, fmt, fmtFecha, fmtFechaLarga, esc } from '../util.js';
 import { ESTADOS_PROY, fechaPesaje, tendenciaEn, ritmoActual, bloqueEn } from '../calc.js';
 import { serie, proyecciones, mantenimiento, alertas } from '../contexto.js';
-import { graficaPeso } from './charts.js';
+import { graficaPeso, dibujar } from './charts.js';
 
 const DIAS_GRAFICA = 56;
 
@@ -63,12 +63,13 @@ export function render(root) {
     const desde = addDays(hoy, -(DIAS_GRAFICA - 1));
     const fechas = Array.from({ length: DIAS_GRAFICA }, (_, i) => addDays(desde, i));
     const map = new Map(dias.map(d => [d.date, d]));
-    graficaPeso(root.querySelector('#g-tendencia'), {
+    const canvas = root.querySelector('#g-tendencia');
+    dibujar(canvas, () => graficaPeso(canvas, {
       labels: fechas.map(f => fmtFecha(f)),
       pesos: fechas.map(f => map.get(f)?.weight ?? null),
       tendencia: fechas.map(f => s.get(f) ?? null),
       metas: proys.slice(0, 2).map(p => ({ valor: p.comp.limitKg, etiqueta: `-${p.comp.limitKg} ${p.comp.name}` })),
-    });
+    }));
   }
 }
 

@@ -7,7 +7,7 @@ import { hoyISO, lunesDe, addDays, diaSemana, fmt, fmtSigned, fmtFecha, esc, toa
 import { TIPOS_SESION } from '../constantes.js';
 import { ESTADOS_PROY, fechaPesaje } from '../calc.js';
 import { reporteSemanal, textoResumen, semanasConDatos } from '../report.js';
-import { graficaPeso, graficaKcal, graficaCarga, COLOR } from './charts.js';
+import { graficaPeso, graficaKcal, graficaCarga, dibujar, COLOR } from './charts.js';
 
 let root;
 let lunes = lunesDe(hoyISO());
@@ -133,24 +133,32 @@ function cuerpo(r) {
 
 function graficas(r, d) {
   const labels = r.fechas.map(f => `${DIAS_CORTOS[diaSemana(f)]} ${Number(f.slice(8))}`);
+  const gPeso = root.querySelector('#g-peso');
   if (r.peso.n) {
-    graficaPeso(root.querySelector('#g-peso'), {
+    dibujar(gPeso, () => graficaPeso(gPeso, {
       labels, pesos: r.peso.pesos, tendencia: r.peso.tendencia, metas: r.peso.metas,
-    });
+    }));
+  } else {
+    gPeso.closest('.grafica').innerHTML = '<p class="muted small centro">Sin pesajes esta semana.</p>';
   }
+
   const col = { ok: COLOR.ok, cerca: COLOR.cerca, fuera: COLOR.fuera };
-  graficaKcal(root.querySelector('#g-kcal'), {
+  const gKcal = root.querySelector('#g-kcal');
+  dibujar(gKcal, () => graficaKcal(gKcal, {
     labels,
     kcal: r.nutricion.porDia.map(x => x.kcal),
     rangos: r.nutricion.porDia.map(x => x.rango),
     colores: r.nutricion.porDia.map(x => col[x.estado?.nivel] || COLOR.neutro),
-  });
+  }));
 
   // Carga de las últimas 6 semanas
-  const semanas = Array.from({ length: 6 }, (_, i) => addDays(r.lunes, -7 * (5 - i)));
-  graficaCarga(root.querySelector('#g-carga'), {
-    labels: semanas.map(l => fmtFecha(l)),
-    cargas: semanas.map(l => reporteSemanal(l, d).entreno.carga),
+  const gCarga = root.querySelector('#g-carga');
+  dibujar(gCarga, () => {
+    const semanas = Array.from({ length: 6 }, (_, i) => addDays(r.lunes, -7 * (5 - i)));
+    graficaCarga(gCarga, {
+      labels: semanas.map(l => fmtFecha(l)),
+      cargas: semanas.map(l => reporteSemanal(l, d).entreno.carga),
+    });
   });
 }
 

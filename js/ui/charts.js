@@ -36,11 +36,28 @@ export function configurarTema() {
 
 /** Crea (o recrea) una gráfica en el canvas indicado. */
 function crear(canvas, config) {
-  if (!hayCharts() || !canvas) return null;
+  if (!canvas) return null;
+  if (!hayCharts()) throw new Error('La librería de gráficas (Chart.js) no cargó.');
   instancias.get(canvas.id)?.destroy();
   const g = new window.Chart(canvas, config);
   instancias.set(canvas.id, g);
   return g;
+}
+
+/**
+ * Dibuja una gráfica sin romper la pantalla: si algo falla, muestra el
+ * motivo en el lugar de la gráfica (útil para diagnosticar en el iPhone).
+ */
+export function dibujar(canvas, fn) {
+  if (!canvas) return;
+  try {
+    fn();
+  } catch (err) {
+    console.error(err);
+    const caja = canvas.closest('.grafica') || canvas.parentElement;
+    caja.style.height = 'auto';
+    caja.innerHTML = `<div class="alerta small">No se pudo dibujar la gráfica: ${String(err?.message || err).replace(/</g, '&lt;')}</div>`;
+  }
 }
 
 /**

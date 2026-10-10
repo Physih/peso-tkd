@@ -5,7 +5,7 @@
 // Si agregas archivos nuevos, añádelos a ARCHIVOS y sube la VERSION.
 // =====================================================================
 
-const VERSION = 'peso-tkd-v1';
+const VERSION = 'peso-tkd-v2';
 
 const ARCHIVOS = [
   './',

@@ -9,7 +9,7 @@ import * as reporte from './ui/reporte.js';
 import * as progreso from './ui/progreso.js';
 import * as ajustes from './ui/ajustes.js';
 import { configurarTema } from './ui/charts.js';
-import { hoyISO } from './util.js';
+import { hoyISO, toast } from './util.js';
 
 const VISTAS = {
   registro: { mod: registro, titulo: 'Registro' },
@@ -37,6 +37,14 @@ function mostrar() {
   window.scrollTo(0, 0);
   actualizarAvisoRespaldo();
 }
+
+// Muestra en pantalla cualquier error inesperado (en el iPhone no hay consola)
+function avisarError(err) {
+  console.error(err);
+  toast(`Error: ${err?.message || err}`, 'error');
+}
+window.addEventListener('error', e => avisarError(e.error || e.message));
+window.addEventListener('unhandledrejection', e => avisarError(e.reason));
 
 async function iniciar() {
   try {

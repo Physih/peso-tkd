@@ -35,7 +35,8 @@ export function render(cont) {
     ${seccion('alertas', '🔔 Alertas', htmlAlertas())}
     ${seccion('respaldo', '💾 Respaldo', htmlRespaldo())}
     ${seccion('ejemplo', '🧪 Datos de ejemplo', htmlEjemplo())}
-    <p class="muted small centro">Peso TKD · modelo de datos v${SCHEMA_VERSION} · datos guardados solo en este dispositivo</p>
+    <p class="muted small centro">Peso TKD · modelo de datos v${SCHEMA_VERSION} · datos guardados solo en este dispositivo<br>
+      Diagnóstico: gráficas ${window.Chart ? `Chart.js ${window.Chart.version} ✓` : '❌ no cargaron'} · ${navigator.serviceWorker?.controller ? 'offline ✓' : 'offline sin activar'}</p>
   `;
 
   pintarBloques(structuredClone(state.blocks));
